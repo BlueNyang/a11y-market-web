@@ -4,7 +4,7 @@ import axiosInstance from './axiosInstance';
 
 export async function updateUserA11ySettings(settings) {
   try {
-    const resposne = await axiosInstance.put('/api/v1/users/me/a11y', settings);
+    const response = await axiosInstance.put('/api/v1/users/me/a11y', settings);
 
     if (response.status === 200) {
       return response.data;
@@ -14,6 +14,4 @@ export async function updateUserA11ySettings(settings) {
   } catch (err) {
     throw err;
   }
-
-  return reponse.json();
 }
