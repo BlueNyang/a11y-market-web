@@ -140,6 +140,7 @@ function Root() {
   return (
     <>
       <TopBar />
+      <div className='h-20'></div>
       <Outlet />
       <A11yButton />
       <Footer />
