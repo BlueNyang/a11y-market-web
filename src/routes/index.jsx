@@ -73,42 +73,24 @@ function HomePage() {
   };
 
   return (
-    <main
-      className='font-kakao-big flex min-h-screen w-full flex-col items-center pt-20'
-      aria-label='홈페이지 메인 콘텐츠'
-    >
-      <section
-        className='flex h-fit w-full items-center justify-center bg-amber-50 px-4 pb-8 lg:py-8 dark:bg-stone-700'
-        aria-label='주요 혜택 및 이벤트 배너 영역'
-      >
+    <main className='font-kakao-big flex min-h-screen w-full flex-col items-center'>
+      <section className='flex h-fit w-full items-center justify-center bg-amber-50 px-4 pb-8 lg:py-8 dark:bg-stone-700'>
         <MainCarousel data={bannerData} />
       </section>
-      <section
-        className='flex h-fit w-full flex-col items-center justify-center'
-        aria-label='실시간 인기 상품 영역'
-      >
+      <section className='flex h-fit w-full flex-col items-center justify-center'>
         <RealtimeRanking data={realtimeRankingData} />
       </section>
-      <section
-        className='flex h-fit w-full flex-col items-center justify-center'
-        aria-label='카테고리 보기 영역'
-      >
+      <section className='flex h-fit w-full flex-col items-center justify-center'>
         <CategoryView
           categories={categoriesDummyData}
           products={productList}
           onSelectCategory={handleSelectCategory}
         />
       </section>
-      <section
-        className='mt-16 flex w-full flex-col items-center justify-center bg-neutral-100 px-64 dark:bg-neutral-700'
-        aria-label='쇼핑몰 소개 영역'
-      >
+      <section className='mt-16 flex w-full flex-col items-center justify-center bg-neutral-100 px-64 dark:bg-neutral-700'>
         <div className='flex w-full max-w-7xl flex-col items-center justify-center px-4 py-16 text-center'>
           <h2 className='w-full text-4xl font-bold'>왜 A11yMARKET 일까요?</h2>
-          <p
-            className='mt-4 w-full text-xl'
-            aria-label='쇼핑몰 소개 문구'
-          >
+          <p className='mt-4 w-full text-xl'>
             우리 플랫폼은 누구나 쉽게 쇼핑할 수 있는 환경을 만드는 데 집중하고 있습니다.
           </p>
         </div>
