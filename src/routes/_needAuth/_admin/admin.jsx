@@ -6,7 +6,7 @@ import {
   NavigationMenuList,
 } from '@/components/ui/navigation-menu';
 
-export const Route = createFileRoute('/mypage')({
+export const Route = createFileRoute('/_needAuth/_admin/admin')({
   component: RouteComponent,
   //beforeLoad: () => {} // 사용자 하위페이지 접근 검증
 });
@@ -16,15 +16,19 @@ function RouteComponent() {
   const currentPath = router.location.pathname;
 
   // 내비게이션 메뉴
-  /*
-    { label: '메뉴명', path: '/mypage/파일명' },
-  */
-  const menuItems = [{ label: '배송지 관리', path: '/mypage/address' }];
+  const menuItems = [
+    { label: '대시보드', path: '/admin' },
+    { label: '회원 관리', path: '/admin/users' },
+    { label: '판매자 관리', path: '/admin/sellers' },
+    { label: '상품 승인 관리', path: '/admin/products' },
+    { label: '주문 관리', path: '/admin/orders' },
+    { label: '접근성 인증 관리', path: '/admin/accessibility' },
+  ];
 
   // 내비게이션 경로 표시 상단바
   const navPathLabel = () => {
     const item = menuItems.find((m) => m.path === currentPath);
-    const base = 'A11y Market > 마이페이지';
+    const base = 'A11y Market > 관리자페이지';
     if (!item) return base;
     return `${base} > ${item.label}`;
   };
@@ -32,19 +36,21 @@ function RouteComponent() {
   return (
     <div className='flex min-h-screen w-full bg-gray-50'>
       <aside
-        className='mt-20 flex w-48 flex-col border-r bg-white'
-        aria-label='마이페이지 메뉴 보조 영역'
+        className='flex w-48 flex-col border-r bg-white'
+        aria-label='관리자 메뉴 보조 영역'
       >
+        <h2 className='border-b p-6 text-lg font-bold'>관리자 메뉴</h2>
+
         {/* Navigation Buttons */}
         <div className='mt-4 flex flex-col items-center'>
           <NavigationMenu
             orientation='vertical'
             className='w-full'
-            aria-label='마이페이지 내비게이션'
+            aria-label='관리자 페이지 내비게이션'
           >
             <NavigationMenuList
               className='flex w-full flex-col space-y-2 px-0'
-              aria-label='마이페이지 메뉴 목록'
+              aria-label='관리자 페이지 메뉴 목록'
             >
               {menuItems.map((item) => {
                 const active = currentPath === item.path;
@@ -57,7 +63,7 @@ function RouteComponent() {
                     <Link
                       to={item.path}
                       aria-label={`${item.label} 페이지로 이동`}
-                      className={`block w-full rounded px-6 py-4 text-center text-base font-medium transition ${active ? 'bg-gray-300 font-semibold' : 'hover:bg-gray-200'}`}
+                      className={`block w-full rounded py-4 text-center text-base font-medium transition ${active ? `bg-gray-300 font-semibold` : `hover:bg-gray-200`}`}
                     >
                       {item.label}
                     </Link>
@@ -72,7 +78,7 @@ function RouteComponent() {
       {/* Page Content */}
       <main
         className='font-kakao-big flex flex-1 flex-col pt-20'
-        aria-label='마이페이지 내용 영역'
+        aria-label='관리자페이지 내용 영역'
       >
         {/* Top NavPathLabel bar */}
         <div className='font-kakao-big mb-4 w-full border-b border-gray-300 bg-gray-100 px-6 py-3 font-medium text-gray-800'>

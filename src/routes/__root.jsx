@@ -5,16 +5,19 @@ import { useEffect } from 'react';
 import TopBar from '@/components/layout/top-bar';
 import Footer from '@/components/layout/footer';
 import A11yButton from '@/components/A11y/A11yButton';
+import { useAuthInit } from '@/hooks/useAuthInit';
+import { Spinner } from '@/components/ui/spinner';
 
 export const Route = createRootRoute({
   component: Root,
 });
 
 function Root() {
-  {
-    /* a11y 상태 적용 */
-  }
+  useAuthInit();
 
+  const isLoading = useSelector((state) => state.auth.isLoading);
+
+  // a11y 상태 적용
   const {
     contrastLevel,
     textSizeLevel,
@@ -106,9 +109,7 @@ function Root() {
     cursorHighlight,
   ]);
 
-  {
-    /* 스크린 리더 */
-  }
+  // 스크린 리더
   useEffect(() => {
     if (!screenReader) return;
 
@@ -136,6 +137,15 @@ function Root() {
       window.speechSynthesis.cancel();
     };
   }, [screenReader]);
+
+  if (isLoading) {
+    return (
+      <div className='flex h-screen items-center justify-center'>
+        <p className='text-lg'>로딩 중...</p>
+        <Spinner />
+      </div>
+    );
+  }
 
   return (
     <>
