@@ -1,9 +1,12 @@
+import { authApi } from '@/api/authApi';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { loginSuccess } from '@/store/authSlice';
 
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 export const Route = createFileRoute('/_auth/login')({
   component: RouteComponent,
@@ -11,44 +14,25 @@ export const Route = createFileRoute('/_auth/login')({
 
 function RouteComponent() {
   const navigate = useNavigate();
-
-  const accountDummy = {
-    userId: '019A698A43EA778587A64BA7E9E58784',
-    password: '$2a$12$OxYBiRRrtePakTIhbVgJr.XzTF6tiAec2GefCb0SPqOTUXB5glRnG',
-    userName: '김철수',
-    email: 'user1@example.com',
-    role: 'USER',
-  };
+  const dispatch = useDispatch();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
 
-  function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorMsg('');
 
-    // 이메일 비었는지 확인
-    if (!email.trim()) {
-      setErrorMsg('이메일을 입력해주세요.');
-      return;
-    }
-
-    // 비밀번호 비었는지 확인
-    if (!password.trim()) {
-      setErrorMsg('비밀번호를 입력해주세요.');
-      return;
-    }
-
-    if (email === accountDummy.email && password === accountDummy.password) {
-      console.log('로그인 성공 Dummy user: ', accountDummy);
-
-      //로그인 성공시 홈으로 이동
+    try {
+      const resp = await authApi.login(email, password);
+      const { user, accessToken, refreshToken } = resp.data;
+      dispatch(loginSuccess({ user, accessToken, refreshToken }));
       navigate({ to: '/' });
-    } else {
+    } catch (err) {
+      console.error('Login failed:', err);
       setErrorMsg('이메일 또는 비밀번호가 올바르지 않습니다.');
     }
-  }
+  };
 
   return (
     <main className='font-kakao-big-sans mx-auto max-w-md px-4 py-10'>
