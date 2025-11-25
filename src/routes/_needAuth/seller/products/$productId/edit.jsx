@@ -1,4 +1,4 @@
-// src/routes/seller/products/$productId/edit.jsx
+// src/routes/_needAuth/seller/products/$productId/edit.jsx
 import React, { useState } from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import { Button } from '@/components/ui/button';
@@ -463,6 +463,6 @@ function SellerProductEditPage() {
 }
 
 // TanStack Router – /seller/products/:productId/edit 경로
-export const Route = createFileRoute('/seller/products/$productId/edit')({
+export const Route = createFileRoute('/_needAuth/seller/products/$productId/edit')({
   component: SellerProductEditPage,
 });
