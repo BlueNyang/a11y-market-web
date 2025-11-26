@@ -28,15 +28,19 @@ export const Route = createFileRoute('/_needAuth/_mypage/mypage/')({
 
 function RouteComponent() {
   const orderMenuItems = [
-    { label: '전체', path: '/mypage/orders' },
-    { label: '배송중', path: '/mypage/orders/shipping' },
-    { label: '배송완료', path: '/mypage/orders/completed' },
-    { label: '취소/환불', path: '/mypage/orders/canceled' },
+    // { label: '전체', path: '/mypage/orders' },
+    // { label: '배송중', path: '/mypage/orders/shipping' },
+    // { label: '배송완료', path: '/mypage/orders/completed' },
+    // { label: '취소/환불', path: '/mypage/orders/canceled' },
+    { label: '전체', status: 'ALL' },
+    { label: '배송중', status: 'SHIPPING' },
+    { label: '배송완료', status: 'DELIVERED' },
+    { label: '취소/환불', status: 'CANCELED' },
   ];
 
   const [userInfo, setUserInfo] = useState({});
   const [orderList, setOrderList] = useState([]);
-  const [activeOrderMenu, setActiveOrderMenu] = useState(orderMenuItems[0].path);
+  const [activeOrderMenu, setActiveOrderMenu] = useState(orderMenuItems[0].status);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -97,13 +101,13 @@ function RouteComponent() {
         </div>
         <nav className='flex w-full'>
           {orderMenuItems.map((item) => {
-            const isActive = activeOrderMenu === item.path;
+            const isActive = activeOrderMenu === item.status;
             return (
               <Button
-                key={item.path}
+                key={item.status}
                 variant='ghost'
                 className={`relative rounded-md px-8 py-5 text-lg font-medium transition-colors hover:bg-transparent ${isActive ? 'text-neutral-900' : 'text-neutral-600 hover:text-neutral-900'} `}
-                onClick={() => setActiveOrderMenu(item.path)}
+                onClick={() => setActiveOrderMenu(item.status)}
               >
                 {isActive && (
                   <motion.span
