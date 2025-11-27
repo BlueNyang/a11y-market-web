@@ -18,9 +18,9 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from '@/components/ui/item';
-import { Table, TableCell, TableHead, TableRow } from '@/components/ui/table';
+import { Table, TableBody, TableCell, TableHead, TableRow } from '@/components/ui/table';
 import { useState } from 'react';
-import { AddressModifier } from './address-modifier';
+import { AddressModifier } from '@/components/address/address-modifier';
 
 export const AddressSelector = ({ addresses, defaultAddressId, onSelectAddress }) => {
   const [selectedAddressId, setSelectedAddressId] = useState(defaultAddressId);
@@ -106,28 +106,30 @@ export const AddressSelector = ({ addresses, defaultAddressId, onSelectAddress }
       </CardHeader>
       <CardContent>
         <Table>
-          <TableRow>
-            <TableHead className='w-[10%] bg-neutral-100 pl-4 text-right'>배송지 이름</TableHead>
-            <TableCell className='border-l px-8'>{selectedAddress.addressName}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableHead className='w-[10%] bg-neutral-100 pl-4 text-right'>수령인</TableHead>
-            <TableCell className='border-l px-8'>{selectedAddress.receiverName}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableHead className='w-[10%] bg-neutral-100 pl-4 text-right'>연락처</TableHead>
-            <TableCell className='border-l px-8'>
-              {formatPhoneNumber(selectedAddress.receiverPhone)}
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableHead className='w-[10%] bg-neutral-100 pl-4 text-right'>우편번호</TableHead>
-            <TableCell className='border-l px-8'>{selectedAddress.receiverZipcode}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableHead className='w-[10%] bg-neutral-100 pl-4 text-right'>주소</TableHead>
-            <TableCell className='border-l px-8'>{`${selectedAddress.receiverAddr1} ${selectedAddress.receiverAddr2}`}</TableCell>
-          </TableRow>
+          <TableBody>
+            <TableRow>
+              <TableHead className='w-[10%] bg-neutral-100 pl-4 text-right'>배송지 이름</TableHead>
+              <TableCell className='border-l px-8'>{selectedAddress.addressName}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableHead className='w-[10%] bg-neutral-100 pl-4 text-right'>수령인</TableHead>
+              <TableCell className='border-l px-8'>{selectedAddress.receiverName}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableHead className='w-[10%] bg-neutral-100 pl-4 text-right'>연락처</TableHead>
+              <TableCell className='border-l px-8'>
+                {formatPhoneNumber(selectedAddress.receiverPhone)}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableHead className='w-[10%] bg-neutral-100 pl-4 text-right'>우편번호</TableHead>
+              <TableCell className='border-l px-8'>{selectedAddress.receiverZipcode}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableHead className='w-[10%] bg-neutral-100 pl-4 text-right'>주소</TableHead>
+              <TableCell className='border-l px-8'>{`${selectedAddress.receiverAddr1} ${selectedAddress.receiverAddr2}`}</TableCell>
+            </TableRow>
+          </TableBody>
         </Table>
       </CardContent>
     </Card>
