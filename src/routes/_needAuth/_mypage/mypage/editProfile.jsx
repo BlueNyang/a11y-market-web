@@ -9,37 +9,34 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { userApi } from '@/api/userApi';
-import { setProfile } from '@/store/userSlice';
-import { useDispatch, useSelector } from 'react-redux';
 
 export const Route = createFileRoute('/_needAuth/_mypage/mypage/editProfile')({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-
-  const dispatch = useDispatch();
-  const profile = useSelector((state) => state.user.profile);
   
-  const [form, setForm] = useState({
+  const [initialData, setInitialData] = useState({
     userName: '',
     userEmail: '',
     userPhone: '',
     userNickname: '',
   });
 
+  const [form, setForm] = useState(initialData);
+
   useEffect(() => {
     async function fetchProfile() {
       try {
         const resp = await userApi.getProfile();
-        dispatch(setProfile(resp.data));
-
-        setForm({
+        const data = {
           userName: resp.data.userName || '',
           userEmail: resp.data.userEmail || '',
           userPhone: resp.data.userPhone || '',
           userNickname: resp.data.userNickname || '',
-        });
+        };
+        setInitialData(data);
+        setForm(data);
       } catch (err) {
         alert('회원정보를 불러오는데 실패했습니다.');
       }
@@ -54,8 +51,14 @@ function RouteComponent() {
   const handleSave = async () => {
     try {
       const resp = await userApi.updateProfile(form);
-
-      dispatch(setProfile(resp.data));
+      const data={
+        userName: resp.data.userName || '',
+          userEmail: resp.data.userEmail || '',
+          userPhone: resp.data.userPhone || '',
+          userNickname: resp.data.userNickname || '',
+      };
+      setInitialData(data);
+      setForm(data);
       alert('변경사항이 저장되었습니다');
     } catch (err) {
       alert('회원정보 수정에 실패했습니다');
@@ -63,12 +66,7 @@ function RouteComponent() {
   };
 
   const handleCancel = () => {
-    setForm({
-      userName: profile?.userName || '',
-      userEmail: profile?.userEmail || '',
-      userPhone: profile?.userPhone || '',
-      userNickname: profile?.userNickname || ''
-    });
+    setForm(initialData);
     alert('변경사항이 취소되었습니다');
   };
 
