@@ -1,47 +1,45 @@
 // src/components/A11y/A11yOverlay.jsx
 
-import { updateUserA11ySettings } from '@/api/a11y';
-import { useState } from 'react';
-import { A11Y_PROFILES } from '@/lib/a11y/profiles';
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+import { updateUserA11ySettings } from '@/api/a11yApi';
+import { Button } from '@/components/ui/button';
 import {
   Select,
-  SelectTrigger,
-  SelectValue,
   SelectContent,
   SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from '@/components/ui/select';
-import { useDispatch, useSelector } from 'react-redux';
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+import { A11Y_PROFILES } from '@/lib/a11y/profiles';
 import {
+  cycleContrast,
+  cycleLineHeight,
+  cycleTextAlign,
+  cycleTextSize,
+  cycleTextSpacing,
+  resetAll,
+  toggleCursorHighlight,
+  toggleHighlightLinks,
+  toggleScreenReader,
+  toggleSmartContrast,
+} from '@/store/a11ySlice';
+import {
+  AArrowUp,
+  AlignCenter,
+  AlignJustify,
+  AlignLeft,
+  AlignRight,
   Check,
-  Volume2,
   Contrast,
   Lightbulb,
   Link,
-  AArrowUp,
-  StretchHorizontal,
   MousePointer,
   Plus,
-  AlignLeft,
-  AlignCenter,
-  AlignRight,
-  AlignJustify,
-  ChevronDown,
-  ChevronUp,
+  StretchHorizontal,
+  Volume2,
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import {
-  cycleContrast,
-  cycleTextSize,
-  cycleTextSpacing,
-  cycleLineHeight,
-  cycleTextAlign,
-  toggleScreenReader,
-  toggleSmartContrast,
-  toggleHighlightLinks,
-  toggleCursorHighlight,
-  resetAll,
-} from '@/store/a11ySlice';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 const languages = [
   { code: 'ko', label: '한국어' },

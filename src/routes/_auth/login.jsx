@@ -1,4 +1,4 @@
-import { authApi } from '@/api/auth';
+import { authApi } from '@/api/authApi';
 import { Alert, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';

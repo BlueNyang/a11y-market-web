@@ -1,4 +1,9 @@
+import axiosInstance from '@/api/axiosInstance';
+import { deleteCartItems } from '@/api/cartApi';
+import { Button } from '@/components/ui/button';
+import { ButtonGroup } from '@/components/ui/button-group';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Input } from '@/components/ui/input';
 import {
   Table,
   TableBody,
@@ -9,11 +14,6 @@ import {
 } from '@/components/ui/table';
 import { MinusIcon, PlusIcon, TrashIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { ButtonGroup } from '@/components/ui/button-group';
-import { Input } from '@/components/ui/input';
-import axiosInstance from '@/api/axiosInstance';
-import { deleteCartItems } from '@/api/cart';
 
 export const CartGroup = ({ groupData, selectedItems, setSelectedItems }) => {
   const [data, setData] = useState(groupData.items);

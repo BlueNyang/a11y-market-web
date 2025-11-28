@@ -1,6 +1,6 @@
 // mypage/order/index.jsx
 
-import { getMyOrders } from '@/api/order';
+import { getMyOrders } from '@/api/orderApi';
 import OrderCard from '@/components/order/OrderCard';
 import OrderPagination from '@/components/order/OrderPagination';
 import { Card, CardContent } from '@/components/ui/card';

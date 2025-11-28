@@ -1,4 +1,4 @@
-import { getMyOrders } from '@/api/order';
+import { getMyOrders } from '@/api/orderApi';
 import OrderList from '@/components/order/OrderList';
 import OrderPagination from '@/components/order/OrderPagination';
 import { Card, CardContent } from '@/components/ui/card';
