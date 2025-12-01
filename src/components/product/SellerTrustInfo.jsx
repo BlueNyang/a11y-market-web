@@ -1,13 +1,13 @@
 // src/components/product/SellerTrustInfo.jsx
 import { ShieldCheck } from 'lucide-react';
 
-function SellerTrustInfo({ sellerName, sellerGrade, a11yGuarantee }) {
+function SellerTrustInfo({ sellerId, sellerName, sellerGrade, a11yGuarantee }) {
   return (
     <div
       className='flex items-center gap-2 text-xs'
       aria-label='판매자 신뢰 정보'
     >
-      {/* 접근성 인증 마크 */}
+      {/* A11y 인증 마크 */}
       {a11yGuarantee && (
         <span
           className='flex items-center gap-1 rounded-full bg-green-50 px-2 py-0.5 text-xs font-semibold text-green-700'
@@ -28,6 +28,13 @@ function SellerTrustInfo({ sellerName, sellerGrade, a11yGuarantee }) {
       >
         {sellerGrade}
       </span>
+
+      {/* 판매자명 클릭 -> 판매자 스토어 페이지 (개발중) */}
+      {/* <Link to="/sellers/$sellerId"
+        params={{ sellerId }}
+        className="ml-2 text-xs font-medium text-gray-600 hover:underline">
+            {sellerName} &gt;
+        </Link> */}
     </div>
   );
 }
