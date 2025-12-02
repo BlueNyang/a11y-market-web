@@ -17,7 +17,7 @@ function SellerTrustInfo({ sellerId, sellerName, sellerGrade, a11yGuarantee }) {
             className='h-3.5 w-3.5'
             aria-hidden='true'
           />
-          A11Y
+          접근성 인증
         </span>
       )}
 
