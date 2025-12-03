@@ -14,7 +14,7 @@ export const Route = createFileRoute('/_auth/auth/oauth-redirect')({
 });
 
 function RouteComponent() {
-  const { accessToken } = Route.useSearch();
+  const { accessToken, redirect } = Route.useSearch();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
