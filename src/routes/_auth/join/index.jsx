@@ -32,16 +32,16 @@ function RouteComponent() {
   const [errorMsg, setErrorMsg] = useState('');
 
   function handleEmailCheck() {
+    setErrorMsg('');
     if (!emailId.trim()) return setErrorMsg('이메일을 입력하세요.');
+
+    //TODO: 실제 API 연동 필요
     alert('사용 가능한 이메일입니다.');
   }
 
   function handleSubmit(e) {
     e.preventDefault();
     setErrorMsg('');
-
-    const email = `${emailId}@${emailDomain}`;
-    const birth = `${birthYear}-${birthMonth}-${birthDay}`;
 
     //검증
     if (!emailId) return setErrorMsg('이메일을 입력하세요.');
@@ -51,17 +51,6 @@ function RouteComponent() {
     if (!name.trim()) return setErrorMsg('이름을 입력하세요.');
     if (!/^[0-9]{11}$/.test(phone)) return setErrorMsg('전화번호는 숫자 11자리여야 합니다.');
 
-    //정상 출력
-    console.log('가입 데이터 :', {
-      userId,
-      password,
-      name,
-      nickname,
-      phone,
-      email,
-      birth,
-    });
-
     alert('회원가입이 완료되었습니다.');
     navigate({ to: '/login' });
   }
@@ -70,6 +59,7 @@ function RouteComponent() {
     <main className='font-kakao-big-sans mx-auto max-w-md px-4 py-10'>
       <h1 className='mb-6 text-xl font-bold'>회원가입</h1>
       <p className='mb-6 text-sm text-gray-600'>* 표시된 항목은 필수 입력입니다.</p>
+
       {errorMsg && <p className='mb-4 text-sm font-medium text-red-600'>{errorMsg}</p>}
 
       <form
@@ -107,6 +97,7 @@ function RouteComponent() {
               type='button'
               variant='outline'
               className='text-sm'
+              onClick={handleEmailCheck}
             >
               중복확인
             </Button>
