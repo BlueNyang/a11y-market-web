@@ -3,7 +3,9 @@ import {
   NavigationMenuItem,
   NavigationMenuList,
 } from '@/components/ui/navigation-menu';
-import { createFileRoute, Link, Outlet, useRouterState } from '@tanstack/react-router';
+import { ROLES } from '@/constants/roles';
+import { createFileRoute, Link, Outlet, useNavigate, useRouterState } from '@tanstack/react-router';
+import { useSelector } from 'react-redux';
 
 export const Route = createFileRoute('/_needAuth/_admin/admin')({
   component: RouteComponent,
@@ -12,6 +14,10 @@ export const Route = createFileRoute('/_needAuth/_admin/admin')({
 
 function RouteComponent() {
   const router = useRouterState();
+  const navigate = useNavigate();
+
+  const { user } = useSelector((state) => state.auth);
+
   const currentPath = router.location.pathname;
 
   // 내비게이션 메뉴
@@ -31,6 +37,12 @@ function RouteComponent() {
     if (!item) return base;
     return `${base} > ${item.label}`;
   };
+
+  if (user?.userRole !== ROLES.ADMIN) {
+    navigate({
+      to: '/unauthorized',
+    });
+  }
 
   return (
     <div className='flex min-h-screen w-full bg-gray-50'>

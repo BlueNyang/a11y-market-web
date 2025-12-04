@@ -7,16 +7,10 @@ export const Route = createFileRoute('/_needAuth/_seller/seller')({
 });
 
 function RouteComponent() {
-  const { user, isAuthenticated, isLoading } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
-  console.log('Seller RouteComponent rendered', { user, isAuthenticated, isLoading });
-  if (isLoading) {
-    return <LoadingEmpty />;
-  }
-
   if (user?.userRole !== ROLES.SELLER) {
-    console.log('Redirecting to /unauthorized because user is not a seller');
     navigate({
       to: '/unauthorized',
     });
