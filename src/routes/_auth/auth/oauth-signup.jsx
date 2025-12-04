@@ -10,41 +10,40 @@ export const Route = createFileRoute('/_auth/auth/oauth-signup')({
   }),
 });
 
-const steps = [
-  {
-    id: 'userEmail',
-    label: '이메일',
-    placeholder: 'example@email.com',
-    type: 'email',
-    description: '로그인에 사용할 이메일 주소를 입력해주세요.',
-  },
-  {
-    id: 'userName',
-    label: '이름',
-    placeholder: '홍길동',
-    type: 'text',
-    description: '실명을 입력해주세요.',
-  },
-  {
-    id: 'userNickname',
-    label: '닉네임',
-    placeholder: '길동이',
-    type: 'text',
-    description: '다른 사용자에게 보여질 닉네임을 입력해주세요.',
-  },
-  {
-    id: 'userPhone',
-    label: '휴대폰 번호',
-    placeholder: '010-1234-5678',
-    type: 'tel',
-    description: '본인 확인을 위해 휴대폰 번호를 입력해주세요.',
-  },
-];
-
 function RouteComponent() {
+  const steps = [
+    {
+      id: 'userEmail',
+      label: '이메일',
+      placeholder: 'example@email.com',
+      type: 'email',
+      description: '로그인에 사용할 이메일 주소를 입력해주세요.',
+    },
+    {
+      id: 'userName',
+      label: '이름',
+      placeholder: '홍길동',
+      type: 'text',
+      description: '실명을 입력해주세요.',
+    },
+    {
+      id: 'userNickname',
+      label: '닉네임',
+      placeholder: '길동이',
+      type: 'text',
+      description: '다른 사용자에게 보여질 닉네임을 입력해주세요.',
+    },
+    {
+      id: 'userPhone',
+      label: '휴대폰 번호',
+      placeholder: '010-1234-5678',
+      type: 'tel',
+      description: '본인 확인을 위해 휴대폰 번호를 입력해주세요.',
+    },
+  ];
+
   const { tempToken } = Route.useSearch();
 
-  const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
     userEmail: '',
     userName: '',
@@ -65,7 +64,7 @@ function RouteComponent() {
         to: '/invalid-path',
       });
     }
-  }, [currentStep, isCompleted]);
+  }, [isCompleted]);
 
   const validateField = (field, value) => {
     switch (field) {

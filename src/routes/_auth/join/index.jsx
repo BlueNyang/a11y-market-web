@@ -1,4 +1,6 @@
-import { createFileRoute, useNavigate } from '@tanstack/react-router';
+import { authApi } from '@/api/auth-api';
+import { JoinForm } from '@/components/auth/join-form';
+import { createFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
 
 export const Route = createFileRoute('/_auth/join/')({
@@ -6,11 +8,55 @@ export const Route = createFileRoute('/_auth/join/')({
 });
 
 function RouteComponent() {
+  const steps = [
+    {
+      id: 'userEmail',
+      label: '이메일',
+      placeholder: 'example@email.com',
+      type: 'email',
+      autoComplete: 'username',
+      description: '로그인에 사용할 이메일 주소를 입력해주세요.',
+    },
+    {
+      id: 'userPass',
+      label: '비밀번호',
+      placeholder: '********',
+      type: 'password',
+      autoComplete: 'new-password',
+      description: '안전한 비밀번호를 입력해주세요.',
+    },
+    {
+      id: 'userName',
+      label: '이름',
+      placeholder: '홍길동',
+      type: 'text',
+      autoComplete: 'name',
+      description: '실명을 입력해주세요.',
+    },
+    {
+      id: 'userNickname',
+      label: '닉네임',
+      placeholder: '길동이',
+      type: 'text',
+      autoComplete: 'nickname',
+      description: '다른 사용자에게 보여질 닉네임을 입력해주세요.',
+    },
+    {
+      id: 'userPhone',
+      label: '휴대폰 번호',
+      placeholder: '010-1234-5678',
+      type: 'tel',
+      autoComplete: 'tel',
+      description: '본인 확인을 위해 휴대폰 번호를 입력해주세요.',
+    },
+  ];
+
   const { tempToken } = Route.useSearch();
 
-  const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
     userEmail: '',
+    userPass: '',
+    userPassConfirm: '',
     userName: '',
     userNickname: '',
     userPhone: '',
@@ -20,16 +66,6 @@ function RouteComponent() {
 
   const [submitCheckDialogOpen, setSubmitCheckDialogOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (tempToken === '' || tempToken == null) {
-      navigate({
-        to: '/invalid-path',
-      });
-    }
-  }, [currentStep, isCompleted]);
 
   const validateField = (field, value) => {
     switch (field) {
@@ -42,6 +78,14 @@ function RouteComponent() {
       case 'userName':
         if (!value) return '이름을 입력해주세요';
         if (value.length < 2) return '이름은 2자 이상이어야 합니다';
+        return null;
+      case 'userPass':
+        if (!value) return '비밀번호를 입력해주세요';
+        if (value.length < 8) return '비밀번호는 8자 이상이어야 합니다';
+        return null;
+      case 'userPassConfirm':
+        if (!value) return '비밀번호 확인을 입력해주세요';
+        if (value !== formData.userPass) return '비밀번호가 일치하지 않습니다';
         return null;
       case 'userNickname':
         if (!value) return '닉네임을 입력해주세요';
@@ -80,6 +124,7 @@ function RouteComponent() {
         }));
         return false;
       }
+    } else if (currentFocusId === 'userPass') {
     } else if (currentFocusId === 'userNickname') {
       try {
         const resp = await authApi.checkNicknameExists(data);
@@ -160,262 +205,4 @@ function RouteComponent() {
       />
     </main>
   );
-
-  // const navigate = useNavigate();
-
-  // const [emailId, setEmailId] = useState('');
-  // const [emailDomain, setEmailDomain] = useState('naver.com');
-  // const [password, setPassword] = useState('');
-  // const [passwordCheck, setPasswordCheck] = useState('');
-  // const [name, setName] = useState('');
-  // const [nickname, setNickname] = useState('');
-  // const [phone, setPhone] = useState('');
-  // const [birthYear, setBirthYear] = useState('');
-  // const [birthMonth, setBirthMonth] = useState('');
-  // const [birthDay, setBirthDay] = useState('');
-  // const [errorMsg, setErrorMsg] = useState('');
-
-  // function handleEmailCheck() {
-  //   setErrorMsg('');
-  //   if (!emailId.trim()) return setErrorMsg('이메일을 입력하세요.');
-
-  //   //TODO: 실제 API 연동 필요
-  //   alert('사용 가능한 이메일입니다.');
-  // }
-
-  // function handleSubmit(e) {
-  //   e.preventDefault();
-  //   setErrorMsg('');
-
-  //   //검증
-  //   if (!emailId) return setErrorMsg('이메일을 입력하세요.');
-  //   if (!password) return setErrorMsg('비밀번호를 입력하세요.');
-  //   if (password.length < 8) return setErrorMsg('비밀번호는 최소 8자 이상이어야 합니다.');
-  //   if (password !== passwordCheck) return setErrorMsg('비밀번호가 일치하지 않습니다.');
-  //   if (!name.trim()) return setErrorMsg('이름을 입력하세요.');
-  //   if (!/^[0-9]{11}$/.test(phone)) return setErrorMsg('전화번호는 숫자 11자리여야 합니다.');
-
-  //   alert('회원가입이 완료되었습니다.');
-  //   navigate({ to: '/login' });
-  // }
-
-  // return (
-  //   <main className='font-kakao-big-sans mx-auto max-w-md px-4 py-10'>
-  //     <h1 className='mb-6 text-xl font-bold'>회원가입</h1>
-  //     <p className='mb-6 text-sm text-gray-600'>* 표시된 항목은 필수 입력입니다.</p>
-
-  //     {errorMsg && <p className='mb-4 text-sm font-medium text-red-600'>{errorMsg}</p>}
-
-  //     <form
-  //       onSubmit={handleSubmit}
-  //       className='space-y-6'
-  //     >
-  //       {/* 이메일 */}
-  //       <div className='space-y-2'>
-  //         <Label className='text-sm font-semibold'>
-  //           이메일<span className='text-red-500'>*</span>
-  //         </Label>
-  //         <div className='flex items-center gap-2'>
-  //           <Input
-  //             id='emailId'
-  //             type='text'
-  //             placeholder='이메일 주소'
-  //             value={emailId}
-  //             onChange={(e) => setEmailId(e.target.value)}
-  //           />
-  //           <span>@</span>
-  //           <Select
-  //             value={emailDomain}
-  //             onValueChange={setEmailDomain}
-  //           >
-  //             <SelectTrigger className='w-[180px]'>
-  //               <SelectValue placeholder='도메인 선택' />
-  //             </SelectTrigger>
-  //             <SelectContent>
-  //               <SelectItem value='naver.com'>naver.com</SelectItem>
-  //               <SelectItem value='gmail.com'>gmail.com</SelectItem>
-  //               <SelectItem value='daum.com'>daum.com</SelectItem>
-  //             </SelectContent>
-  //           </Select>
-  //           <Button
-  //             type='button'
-  //             variant='outline'
-  //             className='text-sm'
-  //             onClick={handleEmailCheck}
-  //           >
-  //             중복확인
-  //           </Button>
-  //         </div>
-  //       </div>
-
-  //       {/* 비밀번호 */}
-  //       <div className='space-y-2'>
-  //         <Label
-  //           htmlFor='password'
-  //           className='text-sm font-semibold'
-  //         >
-  //           비밀번호 <span className='text-red-500'>*</span>
-  //         </Label>
-  //         <Input
-  //           id='password'
-  //           type='password'
-  //           placeholder='비밀번호 입력 (문자, 숫자, 특수문자 포함 8~20자)'
-  //           value={password}
-  //           onChange={(e) => setPassword(e.target.value)}
-  //         />
-  //       </div>
-
-  //       {/* 비밀번호 확인*/}
-  //       <div className='space-y-2'>
-  //         <Label
-  //           htmlFor='passwordCheck'
-  //           className='text-sm font-semibold'
-  //         >
-  //           비밀번호 확인 <span className='text-red-500'>*</span>
-  //         </Label>
-  //         <Input
-  //           id='passwordCheck'
-  //           type='password'
-  //           placeholder='비밀번호 재입력'
-  //           value={passwordCheck}
-  //           onChange={(e) => setPasswordCheck(e.target.value)}
-  //         />
-  //       </div>
-
-  //       {/* 이름 */}
-  //       <div className='space-y-2'>
-  //         <Label
-  //           htmlFor='name'
-  //           className='text-sm font-semibold'
-  //         >
-  //           이름 <span className='text-red-500'>*</span>
-  //         </Label>
-  //         <Input
-  //           id='name'
-  //           type='text'
-  //           placeholder='이름 입력'
-  //           value={name}
-  //           onChange={(e) => setName(e.target.value)}
-  //         />
-  //       </div>
-
-  //       {/* 닉네임 */}
-  //       <div className='space-y-2'>
-  //         <Label
-  //           htmlFor='nickname'
-  //           className='text-sm font-semibold'
-  //         >
-  //           닉네임
-  //         </Label>
-  //         <Input
-  //           id='nickname'
-  //           type='text'
-  //           placeholder='닉네임 입력'
-  //           value={nickname}
-  //           onChange={(e) => setNickname(e.target.value)}
-  //         />
-  //       </div>
-
-  //       {/* 전화번호 */}
-  //       <div className='space-y-2'>
-  //         <Label
-  //           htmlFor='phone'
-  //           className='text-sm font-semibold'
-  //         >
-  //           전화번호 <span className='text-red-500'>*</span>
-  //         </Label>
-  //         <Input
-  //           id='phone'
-  //           type='text'
-  //           placeholder="휴대폰 번호 입력 ('-' 제외 11자리 입력)"
-  //           value={phone}
-  //           onChange={(e) => setPhone(e.target.value)}
-  //         />
-  //       </div>
-
-  //       {/* 생년월일 */}
-  //       <div className='space-y-2'>
-  //         <Label className='text-sm font-semibold'>생년월일</Label>
-  //         <div className='flex gap-2'>
-  //           <Select
-  //             value={birthYear}
-  //             onValueChange={setBirthYear}
-  //           >
-  //             <SelectTrigger className='flex-1'>
-  //               <SelectValue placeholder='년도' />
-  //             </SelectTrigger>
-  //             <SelectContent>
-  //               {Array.from({ length: 60 }, (_, i) => 2024 - i).map((year) => (
-  //                 <SelectItem
-  //                   key={year}
-  //                   value={String(year)}
-  //                 >
-  //                   {year}
-  //                 </SelectItem>
-  //               ))}
-  //             </SelectContent>
-  //           </Select>
-
-  //           <Select
-  //             value={birthMonth}
-  //             onValueChange={setBirthMonth}
-  //           >
-  //             <SelectTrigger className='flex-1'>
-  //               <SelectValue placeholder='월' />
-  //             </SelectTrigger>
-  //             <SelectContent>
-  //               {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
-  //                 <SelectItem
-  //                   key={m}
-  //                   value={String(m)}
-  //                 >
-  //                   {m}
-  //                 </SelectItem>
-  //               ))}
-  //             </SelectContent>
-  //           </Select>
-
-  //           <Select
-  //             value={birthDay}
-  //             onValueChange={setBirthDay}
-  //           >
-  //             <SelectTrigger className='flex-1'>
-  //               <SelectValue placeholder='일' />
-  //             </SelectTrigger>
-  //             <SelectContent>
-  //               {Array.from({ length: 31 }, (_, i) => i + 1).map((d) => (
-  //                 <SelectItem
-  //                   key={d}
-  //                   value={String(d)}
-  //                 >
-  //                   {d}
-  //                 </SelectItem>
-  //               ))}
-  //             </SelectContent>
-  //           </Select>
-  //         </div>
-  //       </div>
-
-  //       {/* 버튼 영역 */}
-  //       <div className='mt-8 space-y-3'>
-  //         <Button
-  //           type='submit'
-  //           variant='default'
-  //           className='w-full'
-  //         >
-  //           가입하기
-  //         </Button>
-
-  //         <Button
-  //           type='button'
-  //           variant='outline'
-  //           className='w-full'
-  //           onClick={() => navigate({ to: '..' })}
-  //         >
-  //           가입 취소
-  //         </Button>
-  //       </div>
-  //     </form>
-  //   </main>
-  // );
 }

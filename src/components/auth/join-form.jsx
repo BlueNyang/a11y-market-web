@@ -11,12 +11,12 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Field, FieldGroup, FieldSet } from '@/components/ui/field';
+import { Field, FieldGroup, FieldLabel, FieldSet } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { Progress } from '@/components/ui/progress';
+import { useNavigate } from '@tanstack/react-router';
 import { AlertCircleIcon, ArrowLeft, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { Label } from 'recharts';
 import { Spinner } from '../ui/spinner';
 
 export const JoinForm = ({
@@ -37,10 +37,16 @@ export const JoinForm = ({
   const [currentStep, setCurrentStep] = useState(0);
 
   const inputRef = useRef(null);
+  const focusRef = useRef(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (inputRef.current && !isCompleted) {
       inputRef.current.focus();
+    }
+    if (focusRef.current && isCompleted) {
+      focusRef.current.focus();
     }
   }, [currentStep, isCompleted]);
 
@@ -53,8 +59,20 @@ export const JoinForm = ({
       setErrors((prev) => ({ ...prev, [currentField.id]: error }));
       return;
     }
-
     setErrors((prev) => ({ ...prev, [currentField.id]: null }));
+
+    if (currentField.id === 'userPass') {
+      console.log('Validating password confirmation');
+      const confirmError = validateField(
+        `${currentField.id}Confirm`,
+        formData[`${currentField.id}Confirm`],
+      );
+      if (confirmError) {
+        setErrors((prev) => ({ ...prev, [`${currentField.id}Confirm`]: confirmError }));
+        return;
+      }
+      setErrors((prev) => ({ ...prev, [`${currentField.id}Confirm`]: null }));
+    }
 
     const isValid = await validateCheckSteps(currentField.id);
     if (!isValid) {
@@ -77,10 +95,11 @@ export const JoinForm = ({
 
   const handleChange = (e) => {
     const value = e.target.value;
+    const id = e.target.id;
 
-    setFormData((prev) => ({ ...prev, [currentField.id]: value }));
-    if (errors[currentField.id]) {
-      setErrors((prev) => ({ ...prev, [currentField.id]: null }));
+    setFormData((prev) => ({ ...prev, [id]: value }));
+    if (errors[id]) {
+      setErrors((prev) => ({ ...prev, [id]: null }));
     }
   };
 
@@ -153,6 +172,7 @@ export const JoinForm = ({
               </div>
             </div>
             <Button
+              ref={focusRef}
               onClick={() =>
                 navigate({
                   to: '/',
@@ -169,7 +189,7 @@ export const JoinForm = ({
   }
 
   return (
-    <div className='flex items-center justify-center bg-neutral-50 py-16'>
+    <form className='flex items-center justify-center bg-neutral-50 px-4 py-8'>
       <Card className='w-full max-w-md'>
         <CardHeader>
           <CardTitle>
@@ -190,94 +210,147 @@ export const JoinForm = ({
           />
         </CardHeader>
         <CardContent>
-          <FieldGroup className='gap-4 space-y-6'>
-            <div
-              className='flex justify-center gap-2'
-              role='list'
-              aria-label='가입 단계'
-            >
-              {steps.map((step, index) => (
-                <div
-                  key={step.id}
-                  className={`size-3 rounded-full transition-all ${
-                    index === currentStep
-                      ? 'bg-blue-600'
-                      : index < currentStep
-                        ? 'bg-green-500'
-                        : 'bg-gray-300'
-                  }`}
-                  role='listitem'
-                  aria-label={`${step.label} 단계 ${
-                    index < currentStep ? '완료' : index === currentStep ? '현재 단계' : '미완료'
-                  }`}
-                />
-              ))}
-            </div>
-            <FieldSet>
-              <Field>
-                <Label
-                  htmlFor={currentField.id}
-                  className='text-lg'
-                >
-                  {currentField.label}
-                </Label>
-                <Input
-                  ref={inputRef}
-                  id={currentField.id}
-                  type={currentField.type}
-                  placeholder={currentField.placeholder}
-                  value={
-                    currentField.id === 'userPhone'
-                      ? formatPhoneNumber(formData[currentField.id])
-                      : formData[currentField.id]
-                  }
-                  onChange={currentField.id === 'userPhone' ? handlePhoneChange : handleChange}
-                  onKeyDown={handleKeyDown}
-                  aria-describedby={`${currentField.id}-description ${
-                    errors[currentField.id] ? `${currentField.id}-error` : ''
-                  }`}
-                  aria-invalid={!!errors[currentField.id]}
-                  className='p-6 text-lg'
-                />
-                {errors[currentField.id] && (
-                  <p
-                    id={`${currentField.id}-error`}
-                    className='mt-2 text-sm text-red-600'
-                    role='alert'
-                    aria-live='polite'
+          <form>
+            <FieldGroup className='gap-4 space-y-6'>
+              <div
+                className='flex justify-center gap-2'
+                role='list'
+                aria-label='가입 단계'
+              >
+                {steps.map((step, index) => (
+                  <div
+                    key={step.id}
+                    className={`size-3 rounded-full transition-all ${
+                      index === currentStep
+                        ? 'bg-blue-600'
+                        : index < currentStep
+                          ? 'bg-green-500'
+                          : 'bg-gray-300'
+                    }`}
+                    role='listitem'
+                    aria-label={`${step.label} 단계 ${
+                      index < currentStep ? '완료' : index === currentStep ? '현재 단계' : '미완료'
+                    }`}
+                  />
+                ))}
+              </div>
+              <FieldSet>
+                <Field>
+                  <FieldLabel
+                    htmlFor={currentField.id}
+                    className='text-lg'
                   >
-                    {errors[currentField.id]}
-                  </p>
+                    {currentField.label}
+                  </FieldLabel>
+
+                  {currentField.id === 'userPass' && (
+                    <Input
+                      type='email'
+                      autoComplete='username'
+                      value={formData.userEmail || ''}
+                      className='hidden'
+                      readOnly
+                    />
+                  )}
+                  <Input
+                    ref={inputRef}
+                    key={currentField.id}
+                    id={currentField.id}
+                    type={currentField.type}
+                    placeholder={currentField.placeholder}
+                    value={
+                      currentField.id === 'userPhone'
+                        ? formatPhoneNumber(formData[currentField.id])
+                        : formData[currentField.id]
+                    }
+                    autoComplete={currentField.autoComplete}
+                    onChange={currentField.id === 'userPhone' ? handlePhoneChange : handleChange}
+                    onKeyDown={handleKeyDown}
+                    aria-describedby={`${currentField.id}-description ${
+                      errors[currentField.id] ? `${currentField.id}-error` : ''
+                    }`}
+                    aria-invalid={!!errors[currentField.id]}
+                    className='px-4 py-6 text-lg'
+                  />
+                  {errors[currentField.id] && (
+                    <p
+                      id={`${currentField.id}-error`}
+                      className='mt-2 text-sm text-red-600'
+                      role='alert'
+                      aria-live='polite'
+                    >
+                      {errors[currentField.id]}
+                    </p>
+                  )}
+                </Field>
+              </FieldSet>
+              {currentField.id === 'userPass' && (
+                <FieldSet>
+                  <Field>
+                    <FieldLabel
+                      htmlFor={currentField.id}
+                      className='text-lg'
+                    >
+                      {`${currentField.label} 확인`}
+                    </FieldLabel>
+                    <Input
+                      key={`${currentField.id}Confirm`}
+                      id={`${currentField.id}Confirm`}
+                      type={currentField.type}
+                      placeholder={currentField.placeholder}
+                      value={formData[`${currentField.id}Confirm`]}
+                      autoComplete='new-password'
+                      onChange={handleChange}
+                      onKeyDown={handleKeyDown}
+                      aria-describedby={`${currentField.id}Confirm-description ${
+                        errors[`${currentField.id}Confirm`] ? `${currentField.id}Confirm-error` : ''
+                      }`}
+                      aria-invalid={!!errors[`${currentField.id}Confirm`]}
+                      className='p-6 text-lg'
+                    />
+                    {errors[`${currentField.id}Confirm`] && (
+                      <p
+                        id={`${currentField.id}Confirm-error`}
+                        className='mt-2 text-sm text-red-600'
+                        role='alert'
+                        aria-live='polite'
+                      >
+                        {errors[`${currentField.id}Confirm`]}
+                      </p>
+                    )}
+                  </Field>
+                </FieldSet>
+              )}
+              <FieldSet className='flex flex-row justify-between gap-2'>
+                {currentStep > 0 && (
+                  <Button
+                    type='button'
+                    variant='outline'
+                    onClick={handleBack}
+                    className='flex-1'
+                    aria-label='이전 단계로 이동'
+                  >
+                    <ArrowLeft className='mr-2 size-4' />
+                    이전
+                  </Button>
                 )}
-              </Field>
-            </FieldSet>
-            <FieldSet className='flex flex-row justify-between gap-2'>
-              {currentStep > 0 && (
                 <Button
                   type='button'
-                  variant='outline'
-                  onClick={handleBack}
+                  onClick={handleNext}
                   className='flex-1'
-                  aria-label='이전 단계로 이동'
+                  aria-label={
+                    currentStep === steps.length - 1 ? '회원가입 완료' : '다음 단계로 이동'
+                  }
                 >
-                  <ArrowLeft className='mr-2 size-4' />
-                  이전
+                  {currentStep === steps.length - 1 ? '완료' : '다음'}
+                  <ArrowRight className='ml-2 size-4' />
                 </Button>
-              )}
-              <Button
-                type='button'
-                onClick={handleNext}
-                className='flex-1'
-                aria-label={currentStep === steps.length - 1 ? '회원가입 완료' : '다음 단계로 이동'}
-              >
-                {currentStep === steps.length - 1 ? '완료' : '다음'}
-                <ArrowRight className='ml-2 size-4' />
-              </Button>
-            </FieldSet>
-            <p className='text-center text-xs text-gray-500'>
-              Enter 키를 눌러 다음 단계로 이동할 수 있습니다
-            </p>
-          </FieldGroup>
+              </FieldSet>
+              <p className='text-center text-xs text-gray-500'>
+                Enter 키를 눌러 다음 단계로 이동할 수 있습니다
+              </p>
+            </FieldGroup>
+          </form>
         </CardContent>
       </Card>
       <AlertDialog
@@ -330,6 +403,6 @@ export const JoinForm = ({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </div>
+    </form>
   );
 };
