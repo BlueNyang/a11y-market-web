@@ -1,6 +1,6 @@
 // src/routes/cart.jsx
 import { getCartItems } from '@/api/cart-api';
-import { getCheckoutInfo } from '@/api/orderApi';
+import { getCheckoutInfo } from '@/api/order-api';
 import { CartGroup } from '@/components/cart-group';
 import { Alert, AlertTitle } from '@/components/ui/alert';
 import {
@@ -21,7 +21,7 @@ import {
 } from '@/components/ui/empty';
 import { Item } from '@/components/ui/item';
 import { Spinner } from '@/components/ui/spinner';
-import { setOrderItems } from '@/store/orderSlice';
+import { setOrderItems } from '@/store/order-slice';
 import { Icon } from '@iconify/react';
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { AlertCircleIcon } from 'lucide-react';
