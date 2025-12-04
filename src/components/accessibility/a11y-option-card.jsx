@@ -1,6 +1,6 @@
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Check } from 'lucide-react';
-import { Button } from '../ui/button';
 
 export const A11yOptionCard = ({ label, icon, isActive, onClick, steps = 0, currentStep = 0 }) => {
   return (

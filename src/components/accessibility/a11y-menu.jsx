@@ -1,4 +1,13 @@
+import { A11yOptionCard } from '@/components/accessibility/a11y-option-card';
+import A11yOverlaySave from '@/components/accessibility/a11y-overlay-save';
 import { Button } from '@/components/ui/button';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import {
   A11yContrast,
@@ -37,9 +46,6 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import { A11yOptionCard } from './a11y-option-card';
-import A11yOverlaySave from './a11y-overlay-save';
 
 export const A11yMenu = ({ child }) => {
   //전역 상태

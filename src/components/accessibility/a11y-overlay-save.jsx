@@ -9,11 +9,11 @@ import {
 import { Input } from '@/components/ui/input';
 
 import { createA11yProfile } from '@/api/a11y-api';
+import { Alert, AlertTitle } from '@/components/ui/alert';
+import { Field, FieldLabel } from '@/components/ui/field';
+import { Spinner } from '@/components/ui/spinner';
 import { AlertCircleIcon } from 'lucide-react';
 import { useState } from 'react';
-import { Alert, AlertTitle } from '../ui/alert';
-import { Field, FieldLabel } from '../ui/field';
-import { Spinner } from '../ui/spinner';
 
 export default function A11yOverlaySave({ open, onClose, reloadProfiles, a11yState }) {
   const [name, setName] = useState('');
