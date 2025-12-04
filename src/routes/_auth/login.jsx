@@ -126,8 +126,10 @@ function RouteComponent() {
                   id='email'
                   type='email'
                   placeholder='이메일을 입력하세요'
+                  autoComplete='username'
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  className='px-4 py-6 text-lg'
                 />
               </Field>
               <Field>
@@ -141,6 +143,8 @@ function RouteComponent() {
                   id='password'
                   type='password'
                   placeholder='비밀번호를 입력하세요'
+                  className='px-4 py-6 text-lg'
+                  autoComplete='current-password'
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
@@ -175,7 +179,6 @@ function RouteComponent() {
           <Button
             type='button'
             variant='link'
-            s
             className='w-full py-0 text-sm'
             onClick={() => navigate({ to: '/join' })}
           >
