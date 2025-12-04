@@ -148,6 +148,15 @@
 
 @font-face {
   font-family: 'KakaoSmall';
+  font-weight: 300;
+  font-style: normal;
+  src:
+    url('/fonts/kakao-little-sans/woff2/KakaoSmallSans-Light.woff2') format('woff2'),
+    url('/fonts/kakao-little-sans/woff/KakaoSmallSans-Light.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'KakaoSmall';
   font-weight: 400;
   font-style: normal;
   src:
@@ -161,16 +170,7 @@
   font-style: normal;
   src:
     url('/fonts/kakao-little-sans/woff2/KakaoSmallSans-Bold.woff2') format('woff2'),
-    url('/fonts/kakao-little-sans/woffKakaoSmallSans-Bold.woff') format('woff');
-}
-
-@font-face {
-  font-family: 'KakaoSmall';
-  font-weight: 800;
-  font-style: normal;
-  src:
-    url('/fonts/kakao-little-sans/woff2/KakaoSmallSans-ExtraBold.woff2') format('woff2'),
-    url('/fonts/kakao-little-sans/woff/KakaoSmallSans-ExtraBold.woff') format('woff');
+    url('/fonts/kakao-little-sans/woff/KakaoSmallSans-Bold.woff') format('woff');
 }
 
 @theme font {
