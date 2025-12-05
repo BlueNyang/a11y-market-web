@@ -1,3 +1,4 @@
+import { DashboardStatSection } from '@/components/seller/dashboard-stat-section';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -81,31 +82,10 @@ function SellerDashboardPage() {
             내 판매 정보를 한눈에 확인할 수 있습니다.
           </p>
         </div>
-
-        <Button asChild>
-          <Link to='/seller/products'>내 상품 관리</Link>
-        </Button>
       </section>
 
       {/* 요약 카드 */}
-      <section className='mb-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-4'>
-        <DashboardCard
-          title='총 매출액'
-          value={`${format(data.totalSales)}원`}
-        />
-        <DashboardCard
-          title='총 주문 수'
-          value={`${format(data.totalOrders)}건`}
-        />
-        <DashboardCard
-          title='판매 수량'
-          value={`${format(data.totalProductsSold)}개`}
-        />
-        <DashboardCard
-          title='취소 건수'
-          value={`${format(data.totalCancelled)}건`}
-        />
-      </section>
+      <DashboardStatSection />
 
       {/* 기간 필터 + 매출 추이 차트 */}
       <section className='bg-card mb-8 rounded-2xl border p-4'>
@@ -292,19 +272,5 @@ function SellerDashboardPage() {
         </Card>
       </div>
     </main>
-  );
-}
-
-/** 재사용 요약 카드 */
-function DashboardCard({ title, value }) {
-  return (
-    <Card className='rounded-2xl'>
-      <CardHeader className='pb-2'>
-        <CardTitle className='text-muted-foreground text-sm'>{title}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className='text-2xl font-bold'>{value}</div>
-      </CardContent>
-    </Card>
   );
 }

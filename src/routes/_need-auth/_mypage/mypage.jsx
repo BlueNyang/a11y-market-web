@@ -164,7 +164,11 @@ function RouteComponent() {
               </TabsList>
               {user?.userRole === ROLES.USER && (
                 <Button
-                  onClick={() => navigate('/seller/apply')}
+                  onClick={() =>
+                    navigate({
+                      to: '/seller/apply',
+                    })
+                  }
                   className='group w-full gap-2 shadow-md transition-all duration-400 hover:text-base md:h-12'
                   variant='outline'
                 >
@@ -174,7 +178,11 @@ function RouteComponent() {
               )}
               {user?.userRole === ROLES.SELLER && (
                 <Button
-                  onClick={() => navigate('/seller')}
+                  onClick={() =>
+                    navigate({
+                      to: '/seller/dashboard',
+                    })
+                  }
                   className='group w-full gap-2 shadow-md transition-all duration-400 hover:text-base md:h-12'
                   variant='outline'
                 >
