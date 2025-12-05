@@ -39,8 +39,6 @@ export const DashboardDailyRevenue = () => {
           sales: item.dailyRevenue,
         }));
 
-        console.log('일별 매출 데이터:', formattedData);
-
         setData(formattedData);
       } catch (error) {
         console.error('일별 매출 데이터 조회 실패:', error);
