@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Icon } from '@iconify/react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
+import { LoadingEmpty } from '../main/loading-empty';
 import OrderCard from '../order/order-card';
 import { Button } from '../ui/button';
 import {
@@ -16,6 +17,7 @@ import {
 
 export const OrderHistory = () => {
   const [orders, setOrders] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
@@ -27,9 +29,15 @@ export const OrderHistory = () => {
       } catch (error) {
         console.error('Failed to fetch orders:', error);
         toast.error('주문 내역을 불러오는 데 실패했습니다. 다시 시도해주세요.');
+      } finally {
+        setIsLoading(false);
       }
     })();
   }, []);
+
+  if (isLoading) {
+    return <LoadingEmpty />;
+  }
 
   return (
     <Card>
