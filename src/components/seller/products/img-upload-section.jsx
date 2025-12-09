@@ -5,7 +5,6 @@ import { Field } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Star, Upload, X } from 'lucide-react';
-import { useEffect } from 'react';
 
 export function ImageUploadSection({ images, onImagesChange, sectionType, disabled }) {
   const handleFileSelect = (e) => {
@@ -57,10 +56,6 @@ export function ImageUploadSection({ images, onImagesChange, sectionType, disabl
 
   const sectionId = `${sectionType}-images`;
   const inputId = `${sectionType}-image-input`;
-
-  useEffect(() => {
-    console.log('Current images:', sectionImages);
-  }, [images]);
 
   return (
     <div className='space-y-4'>

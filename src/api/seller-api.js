@@ -116,6 +116,38 @@ export const sellerApi = {
     }
   },
 
+  updateProduct: async (productId, data, images) => {
+    const formData = new FormData();
+
+    const jsonBlob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+    formData.append('data', jsonBlob);
+
+    if (images && images.length > 0) {
+      Array.from(images).forEach((image) => {
+        if (image.file) {
+          formData.append('images', image.file);
+        }
+      });
+    }
+
+    try {
+      const resp = await axiosInstance.put(`/v1/seller/products/${productId}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      if (resp.status !== 200) {
+        throw new Error('Failed to update product');
+      }
+
+      return resp;
+    } catch (err) {
+      console.error('Error updating product:', err);
+      return Promise.reject(err);
+    }
+  },
+
   deleteMyProduct: async (productId) => {
     try {
       const resp = await axiosInstance.delete(`v1/seller/products/${productId}`);
