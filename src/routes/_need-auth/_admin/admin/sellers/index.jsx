@@ -1,5 +1,6 @@
 import { adminApi } from '@/api/admin-api';
 import { SellerInfoItem } from '@/components/admin/seller-info-item';
+import { LoadingEmpty } from '@/components/main/loading-empty';
 import {
   Empty,
   EmptyDescription,
@@ -41,11 +42,15 @@ function RouteComponent() {
     })();
   }, []);
 
+  if (isLoading) {
+    return <LoadingEmpty />;
+  }
+
   return (
     <main className='font-kakao-big mx-auto max-w-6xl px-4 py-8'>
       <section className='mb-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between'>
         <div>
-          <h1 className='text-2xl font-bold'>판매자 등록 신청 관리</h1>
+          <h1 className='text-2xl font-bold'>판매자 관리</h1>
           <p className='text-muted-foreground mt-1 text-sm'>
             판매자 계정 신청을 검토하고 승인/거절할 수 있습니다.
           </p>

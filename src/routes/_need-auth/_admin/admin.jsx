@@ -40,7 +40,6 @@ function RouteComponent() {
     { label: '판매자 승인 관리', path: '/admin/sellers/approval' },
     { label: '상품 승인 관리', path: '/admin/products' },
     { label: '주문 관리', path: '/admin/orders' },
-    { label: '접근성 인증 관리', path: '/admin/accessibility' },
   ];
 
   // functions
@@ -56,7 +55,9 @@ function RouteComponent() {
         className='flex w-full flex-col border-r md:w-48'
         aria-label='관리자 메뉴 보조 영역'
       >
-        <h2 className='border-b p-6 text-lg font-bold'>관리자 메뉴</h2>
+        <h2 className='border-b border-neutral-500 p-6 py-3 text-center text-base font-bold'>
+          관리자 메뉴
+        </h2>
 
         {/* Navigation Buttons */}
         <div className='flex items-center'>
