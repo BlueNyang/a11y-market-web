@@ -7,10 +7,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { Field, FieldGroup } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import {
@@ -22,70 +22,9 @@ import {
   toggleSmartContrast,
 } from '@/store/a11y-slice';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
-function StepSelector({ value, max, onChange }) {
-  return (
-    <div className='flex items-center gap-2'>
-      {Array.from({ length: max + 1 }, (_, i) => (
-        <Button
-          variant='outline'
-          type='button'
-          key={i}
-          onClick={() => onChange(i)}
-          className={`flex h-7 w-7 items-center justify-center rounded-full border text-xs transition ${
-            value === i
-              ? 'border-black bg-black text-white'
-              : 'border-gray-300 bg-white text-gray-600 hover:bg-gray-100'
-          }`}
-          aria-label={`${i + 1} 단계 선택`}
-        >
-          {i + 1}
-        </Button>
-      ))}
-    </div>
-  );
-}
-
-function Row({ label, control }) {
-  return (
-    <div className='flex items-center gap-4'>
-      <Label className='w-24 shrink-0 text-sm font-medium'>{label}</Label>
-      <div className='flex flex-1 justify-end'>{control}</div>
-    </div>
-  );
-}
-
-function ContrastSelector({ value, onChange }) {
-  const options = [
-    { val: 0, label: '기본' },
-    { val: 1, label: '다크' },
-    { val: 2, label: '색 반전' },
-    { val: 3, label: '고대비' },
-    { val: 4, label: '저대비' },
-  ];
-
-  return (
-    <div className='flex items-center gap-2'>
-      {options.map((opt) => (
-        <Button
-          key={opt.val}
-          type='button'
-          variant='outline'
-          onClick={() => onChange(opt.val)}
-          className={`rounded-md px-2 py-1 text-xs ${
-            value === opt.val
-              ? 'border-black bg-black text-white'
-              : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-100'
-          }`}
-        >
-          {opt.label}
-        </Button>
-      ))}
-    </div>
-  );
-}
+import { toast } from 'sonner';
 
 export default function A11yEditModal({ open, onClose, initialProfile, onSaved }) {
   const dispatch = useDispatch();
@@ -130,10 +69,10 @@ export default function A11yEditModal({ open, onClose, initialProfile, onSaved }
 
       if (initialProfile) {
         await a11yApi.updateA11yProfile(initialProfile.profileId, payload);
-        alert('프로필이 수정되었습니다.');
+        toast.success('프로필이 수정되었습니다.');
       } else {
         await a11yApi.createA11yProfile(payload);
-        alert('프로필이 생성되었습니다.');
+        toast.success('새 접근성 프로필이 생성되었습니다.');
       }
 
       onSaved && onSaved();
@@ -156,15 +95,74 @@ export default function A11yEditModal({ open, onClose, initialProfile, onSaved }
     onClose();
   };
 
+  function StepSelector({ value, max, onChange }) {
+    return (
+      <div className='flex items-center gap-2'>
+        {Array.from({ length: max + 1 }, (_, i) => (
+          <Button
+            variant='outline'
+            type='button'
+            key={i}
+            onClick={() => onChange(i)}
+            className={`flex h-7 w-7 items-center justify-center rounded-full border text-xs transition ${
+              value === i
+                ? 'border-black bg-black text-white'
+                : 'border-gray-300 bg-white text-gray-600 hover:bg-gray-100'
+            }`}
+            aria-label={`${i + 1} 단계 선택`}
+          >
+            {i + 1}
+          </Button>
+        ))}
+      </div>
+    );
+  }
+
+  function Row({ label, control }) {
+    return (
+      <div className='flex items-center gap-4'>
+        <Label className='w-24 shrink-0 text-sm font-medium'>{label}</Label>
+        <div className='flex flex-1 justify-end'>{control}</div>
+      </div>
+    );
+  }
+
+  function ContrastSelector({ value, onChange }) {
+    const options = [
+      { val: 0, label: '기본' },
+      { val: 1, label: '다크' },
+      { val: 2, label: '색 반전' },
+      { val: 3, label: '고대비' },
+      { val: 4, label: '저대비' },
+    ];
+
+    return (
+      <div className='flex items-center gap-2'>
+        {options.map((opt) => (
+          <Button
+            key={opt.val}
+            type='button'
+            variant='outline'
+            onClick={() => onChange(opt.val)}
+            className={`rounded-md px-2 py-1 text-xs ${
+              value === opt.val
+                ? 'border-black bg-black text-white'
+                : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-100'
+            }`}
+          >
+            {opt.label}
+          </Button>
+        ))}
+      </div>
+    );
+  }
+
   return (
     <Dialog
       open={open}
       onOpenChange={onClose}
     >
-      <DialogContent
-        className='p-0'
-
-      >
+      <DialogContent className='p-0'>
         <ScrollArea className='max-h-[80vh] px-6 py-4'>
           <DialogHeader>
             <DialogTitle className='text-lg font-bold'>
