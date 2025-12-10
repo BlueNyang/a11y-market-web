@@ -73,4 +73,33 @@ export const adminApi = {
     axiosInstance.patch(`/v1/admin/users/${userId}/permission`, null, {
       params: { role },
     }),
+
+  // 회원 목록 조회
+  getUsers: async () => {
+    try {
+      const resp = await axiosInstance.get('/v1/admin/users');
+      return resp;
+    } catch (err) {
+      console.error('Failed to fetch users info:', err);
+      return Promise.reject(err);
+    }
+  },
+
+  // 회원 권한 변경
+  updateUserRole: async ({ userId, role }) => {
+    try {
+      const resp = await axiosInstance.patch(`/v1/admin/users/${userId}/permission`, null, {
+        params: { role },
+      });
+
+      if (resp.status !== 200) {
+        throw new Error('Failed to update user role');
+      }
+
+      return resp;
+    } catch (err) {
+      console.error('Failed to update user role:', err);
+      return Promise.reject(err);
+    }
+  },
 };

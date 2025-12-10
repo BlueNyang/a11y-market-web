@@ -1,6 +1,7 @@
 // src/routes/_need-auth/_admin/admin/users.jsx
 import { createFileRoute } from '@tanstack/react-router';
 import { Fragment, useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 import { adminApi } from '@/api/admin-api';
 import { Button } from '@/components/ui/button';
@@ -38,9 +39,22 @@ function RouteComponent() {
   // userId → 변경 예정 role
   const [roleDrafts, setRoleDrafts] = useState({});
 
+  /** 행 열고 닫기 */
   const toggleRow = (id) => {
     setExpandedRows((prev) => (prev.includes(id) ? prev.filter((r) => r !== id) : [...prev, id]));
   };
+
+  /**  헬퍼 컴포넌트 */
+  const InfoRow = ({ label, value }) => (
+    <div className="flex justify-between gap-2">
+      <span className="font-kakao-little text-[11px] text-neutral-500 dark:text-neutral-400">
+        {label}
+      </span>
+      <span className="font-kakao-little text-[11px] text-neutral-800 dark:text-neutral-100">
+        {value}
+      </span>
+    </div>
+  );
 
   useEffect(() => {
     async function fetchUsers() {
@@ -50,6 +64,7 @@ function RouteComponent() {
         setUsers(response.data);
       } catch (err) {
         console.error('회원 목록 정보를 불러오는데 실패했습니다.', err);
+        toast.error('회원 목록 정보를 불러오는 데 실패했습니다.');
       }
     }
 
@@ -96,38 +111,42 @@ function RouteComponent() {
   };
 
   return (
-    <div className='mx-auto flex max-w-6xl flex-col gap-6 px-4 py-6'>
+    <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-6">
       {/* 페이지 헤더 */}
-      <header className='text-center'>
-        <h1 className='font-kakao-big mb-2 text-3xl font-semibold text-slate-900'>회원 관리</h1>
-        <p className='font-kakao-little text-sm text-slate-500'>
+      <header className="text-center">
+        <h1 className="font-kakao-big mb-2 text-3xl font-semibold bg-neutral-50 dark:bg-neutral-900">
+          회원 관리
+        </h1>
+        <p className="font-kakao-little text-sm bg-neutral-50 dark:bg-neutral-900">
           등록된 구매자와 판매자의 정보를 조회하고 권한을 관리할 수 있습니다.
         </p>
       </header>
 
       {/* 회원 목록 테이블 카드 */}
-      <Card className='border-slate-200 bg-white shadow-sm'>
-        <CardHeader className='border-b border-slate-100 pb-3'>
-          <CardTitle className='font-kakao-little text-sm text-slate-900'>회원 목록</CardTitle>
-          <CardDescription className='font-kakao-little text-xs text-slate-500'>
+      <Card className="border border-neutral-200 bg-white shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
+        <CardHeader className="border-b border-neutral-100 pb-3 dark:border-neutral-800">
+          <CardTitle className="font-kakao-little text-sm text-neutral-900 dark:text-neutral-50">
+            회원 목록
+          </CardTitle>
+          <CardDescription className="font-kakao-little text-xs text-neutral-500 dark:text-neutral-400">
             행을 클릭하면 상세 정보와 권한 변경 옵션을 확인할 수 있습니다.
           </CardDescription>
         </CardHeader>
 
-        <CardContent className='p-0'>
+        <CardContent className="p-0">
           <Table>
             <TableHeader>
-              <TableRow className='hover:bg-transparent'>
-                <TableHead className='font-kakao-little text-center text-xs font-semibold text-slate-700'>
+              <TableRow className="hover:bg-transparent">
+                <TableHead className="font-kakao-little text-center text-xs font-normal text-neutral-700 dark:text-neutral-300">
                   이름
                 </TableHead>
-                <TableHead className='font-kakao-little text-center text-xs font-semibold text-slate-700'>
+                <TableHead className="font-kakao-little text-center text-xs font-normal text-neutral-700 dark:text-neutral-300">
                   이메일
                 </TableHead>
-                <TableHead className='font-kakao-little text-center text-xs font-semibold text-slate-700'>
+                <TableHead className="font-kakao-little text-center text-xs font-normal text-neutral-700 dark:text-neutral-300">
                   닉네임
                 </TableHead>
-                <TableHead className='font-kakao-little text-center text-xs font-semibold text-slate-700'>
+                <TableHead className="font-kakao-little text-center text-xs font-normal text-neutral-700 dark:text-neutral-300">
                   회원구분
                 </TableHead>
               </TableRow>
@@ -142,19 +161,19 @@ function RouteComponent() {
                   <Fragment key={user.userEmail}>
                     {/* 메인 행 */}
                     <TableRow
-                      className='cursor-pointer hover:bg-slate-50'
+                      className="cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-800/60"
                       onClick={() => toggleRow(user.userEmail)}
                     >
-                      <TableCell className='font-kakao-little text-center text-xs text-slate-800'>
+                      <TableCell className="font-kakao-little text-center text-xs text-neutral-800 dark:text-neutral-100">
                         {user.userName}
                       </TableCell>
-                      <TableCell className='font-kakao-little text-center text-xs text-slate-800'>
+                      <TableCell className="font-kakao-little text-center text-xs text-neutral-800 dark:text-neutral-100">
                         {user.userEmail}
                       </TableCell>
-                      <TableCell className='font-kakao-little text-center text-xs text-slate-800'>
+                      <TableCell className="font-kakao-little text-center text-xs text-neutral-800 dark:text-neutral-100">
                         {user.userNickname}
                       </TableCell>
-                      <TableCell className='font-kakao-little text-center text-xs text-slate-800'>
+                      <TableCell className="font-kakao-little text-center text-xs text-neutral-800 dark:text-neutral-100">
                         {user.userRole}
                       </TableCell>
                     </TableRow>
@@ -164,64 +183,54 @@ function RouteComponent() {
                       <TableRow>
                         <TableCell
                           colSpan={4}
-                          className='bg-slate-50 p-4'
+                          className="bg-neutral-50 p-4 dark:bg-neutral-900/40"
                         >
                           <Card
                             id={`user-details-${user.userEmail}`}
-                            role='region'
-                            className='border-slate-200 bg-white'
+                            role="region"
+                            className="border border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-900"
                           >
-                            <CardHeader className='pb-3'>
-                              <CardTitle className='font-kakao-little text-sm text-slate-900'>
+                            <CardHeader className="pb-3">
+                              <CardTitle className="font-kakao-little text-sm text-neutral-900 dark:text-neutral-50">
                                 회원 상세 정보
                               </CardTitle>
-                              <CardDescription className='font-kakao-little text-xs text-slate-500'>
-                                선택한 회원의 기본 정보와 권한을 확인하고 변경할 수 있습니다.
+                              <CardDescription className="font-kakao-little text-xs text-neutral-500 dark:text-neutral-400">
+                                선택한 회원의 기본 정보와 권한을 확인하고 변경할 수
+                                있습니다.
                               </CardDescription>
                             </CardHeader>
 
-                            <CardContent className='space-y-4'>
+                            <CardContent className="space-y-4">
                               {/* 기본 정보 */}
-                              <div className='grid gap-2 text-xs text-slate-800 sm:grid-cols-2'>
+                              <div className="grid gap-2 text-xs text-neutral-800 dark:text-neutral-100 sm:grid-cols-2">
+                                <InfoRow label="이름" value={user.userName} />
+                                <InfoRow label="이메일" value={user.userEmail} />
+                                <InfoRow label="닉네임" value={user.userNickname} />
+                                <InfoRow label="회원 구분" value={user.userRole} />
                                 <InfoRow
-                                  label='이름'
-                                  value={user.userName}
-                                />
-                                <InfoRow
-                                  label='이메일'
-                                  value={user.userEmail}
-                                />
-                                <InfoRow
-                                  label='닉네임'
-                                  value={user.userNickname}
-                                />
-                                <InfoRow
-                                  label='회원 구분'
-                                  value={user.userRole}
-                                />
-                                <InfoRow
-                                  label='가입일'
+                                  label="가입일"
                                   value={new Date(user.createdAt).toLocaleString()}
                                 />
                                 <InfoRow
-                                  label='최근 수정일'
+                                  label="최근 수정일"
                                   value={new Date(user.updatedAt).toLocaleString()}
                                 />
                               </div>
 
                               {/* 권한 관리 영역 */}
-                              <Card className='border-slate-200 bg-slate-50/60'>
-                                <CardHeader className='pb-2'>
-                                  <CardTitle className='font-kakao-little text-xs font-semibold text-slate-900'>
+                              <Card className="border border-neutral-200 bg-neutral-50/60 dark:border-neutral-700 dark:bg-neutral-900/40">
+                                <CardHeader className="pb-2">
+                                  <CardTitle className="font-kakao-little text-xs font-semibold text-neutral-900 dark:text-neutral-50">
                                     권한 변경
                                   </CardTitle>
-                                  <CardDescription className='font-kakao-little text-[11px] text-slate-500'>
-                                    변경할 권한을 선택한 후 &quot;권한 변경&quot; 버튼을 눌러주세요.
+                                  <CardDescription className="font-kakao-little text-[11px] text-neutral-500 dark:text-neutral-400">
+                                    변경할 권한을 선택한 후 &quot;권한 변경&quot; 버튼을
+                                    눌러주세요.
                                   </CardDescription>
                                 </CardHeader>
-                                <CardContent className='space-y-2'>
-                                  <div className='flex flex-col gap-2 sm:flex-row sm:items-center'>
-                                    <span className='font-kakao-little text-[11px] text-slate-600'>
+                                <CardContent className="space-y-2">
+                                  <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+                                    <span className="font-kakao-little text-[11px] text-neutral-600 dark:text-neutral-300">
                                       변경할 권한 선택
                                     </span>
 
@@ -231,8 +240,8 @@ function RouteComponent() {
                                         handleRoleSelectChange(user.userId, value)
                                       }
                                     >
-                                      <SelectTrigger className='h-8 w-40 text-xs'>
-                                        <SelectValue placeholder='권한 선택' />
+                                      <SelectTrigger className="h-8 w-40 text-xs">
+                                        <SelectValue placeholder="권한 선택" />
                                       </SelectTrigger>
 
                                       <SelectContent>
@@ -240,7 +249,7 @@ function RouteComponent() {
                                           <SelectItem
                                             key={role.value}
                                             value={role.value}
-                                            className='text-xs'
+                                            className="text-xs"
                                           >
                                             {role.label} ({role.value})
                                           </SelectItem>
@@ -249,9 +258,9 @@ function RouteComponent() {
                                     </Select>
 
                                     <Button
-                                      type='button'
-                                      size='sm'
-                                      className='font-kakao-little h-8 px-3 text-xs'
+                                      type="button"
+                                      size="sm"
+                                      className="font-kakao-little h-8 px-3 text-xs"
                                       onClick={() => handleApplyRoleChange(user)}
                                       disabled={currentDraftRole === user.userRole}
                                     >
@@ -272,16 +281,6 @@ function RouteComponent() {
           </Table>
         </CardContent>
       </Card>
-    </div>
-  );
-}
-
-/** 정보 한 줄 */
-function InfoRow({ label, value }) {
-  return (
-    <div className='flex justify-between gap-2'>
-      <span className='font-kakao-little text-[11px] text-slate-500'>{label}</span>
-      <span className='font-kakao-little text-[11px] text-slate-800'>{value}</span>
     </div>
   );
 }
