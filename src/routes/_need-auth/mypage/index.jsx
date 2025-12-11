@@ -1,4 +1,5 @@
 import { userApi } from '@/api/user-api';
+import { A11ySetting } from '@/components/mypage/A11ySetting';
 import { AccountInfo } from '@/components/mypage/AccounInfo';
 import { AddressManager } from '@/components/mypage/AddressManager';
 import { OrderHistory } from '@/components/mypage/OrderHistory';
@@ -16,26 +17,21 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ROLES } from '@/constants/roles';
 import { cn } from '@/lib/utils';
-import { createFileRoute, useNavigate, useRouterState } from '@tanstack/react-router';
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { motion } from 'framer-motion';
 import { FileText, LogOut, Store } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'sonner';
-import A11ySettingsPage from './mypage/a11y';
 
-export const Route = createFileRoute('/_need-auth/_mypage/mypage')({
+export const Route = createFileRoute('/_need-auth/mypage/')({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const router = useRouterState();
-  const currentPath = router.location.pathname;
-
   // 마이페이지 메뉴 항목 정의
   const menuItems = [
     { label: '회원 정보', value: 'info', redirect: false },
-    // { label: '내 프로필', value: 'profile', redirect: false },
     { label: '주문 내역', value: 'order', redirect: false },
     { label: '접근성 프로필', value: 'a11y', redirect: false },
     { label: '배송지 관리', value: 'address', redirect: false },
@@ -205,15 +201,11 @@ function RouteComponent() {
               </TabsContent>
 
               <TabsContent value='a11y'>
-                <A11ySettingsPage />
+                <A11ySetting />
               </TabsContent>
 
               <TabsContent value='address'>
                 <AddressManager />
-              </TabsContent>
-
-              <TabsContent value='a11y'>
-                <A11ySettingsPage />
               </TabsContent>
             </div>
           </div>
