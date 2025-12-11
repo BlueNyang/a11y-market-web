@@ -58,6 +58,8 @@ function orderCheckoutPage() {
 
   // 결제 전 정보 조회
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
     let isMounted = true;
     (async () => {
       try {

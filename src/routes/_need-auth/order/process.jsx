@@ -6,9 +6,11 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty';
+import { fetchCartCount } from '@/store/cart-slice';
 import { Icon } from '@iconify/react';
 import { createFileRoute, useNavigate, useSearch } from '@tanstack/react-router';
 import { useEffect, useRef } from 'react';
+import { useDispatch } from 'react-redux';
 import { toast } from 'sonner';
 
 export const Route = createFileRoute('/_need-auth/order/process')({
@@ -25,6 +27,7 @@ export const Route = createFileRoute('/_need-auth/order/process')({
 
 function RouteComponent() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const searchParams = useSearch({ from: Route.id });
   const processedRef = useRef(false);
 
@@ -47,13 +50,14 @@ function RouteComponent() {
           orderId,
           amount: Number(amount),
           method: paymentKey ? 'TOSS' : 'PORTONE',
-          paymentKey,
-          imp_uid,
+          paymentKey: paymentKey,
+          imp_uid: imp_uid,
           cartItemIdsToDelete: cartItemIds,
         });
 
         sessionStorage.removeItem('checkout_cart_items');
 
+        dispatch(fetchCartCount());
         navigate({
           to: '/order/complete',
           replace: true,
