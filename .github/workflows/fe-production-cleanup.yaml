@@ -16,7 +16,7 @@ jobs:
     runs-on: [self-hosted, fe, qa]
 
     steps:
-      - name: Cleanup server resources via SSH
+      - name: Cleanup server resources
         run: |
           export SERVICE_NAME=${{ env.SERVICE_NAME }}
           export DEPLOY_PATH=${{ env.DEPLOY_PATH }}
