@@ -164,4 +164,6 @@ export const sellerApi = {
   },
 
   applySellerAccount: async (data) => await axiosInstance.post('/v1/seller/apply', data),
+
+  getSellerInfo: async (sellerId) => await axiosInstance.get(`/v1/seller/info/${sellerId}`),
 };

@@ -1,5 +1,4 @@
 // src/routes/products/$productId.jsx
-import { cartApi } from '@/api/cart-api';
 import { productApi } from '@/api/product-api';
 import { AddCartButton } from '@/components/cart/add-cart-button';
 import { ImageWithFallback } from '@/components/image-with-fallback';
@@ -14,10 +13,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router';
 import { MinusIcon, PlusIcon, RotateCcw, Shield, Store, Truck } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { toast } from 'sonner';
 
 function ProductDetailPage() {
-  const { productId } = Route.useParams(); // 실제 연동 시 사용 예정
+  const { productId } = Route.useParams();
 
   // 기본 탭은 상세정보로
   const [productData, setProductData] = useState(null);
@@ -59,24 +57,6 @@ function ProductDetailPage() {
     });
   };
 
-  const handleAddToCart = async () => {
-    try {
-      setIsSubmitting(true);
-      const { status } = await cartApi.addCartItem(productId, quantity);
-
-      if (status !== 204) {
-        throw new Error('Failed to add item to cart');
-      }
-
-      toast.success('장바구니에 상품이 추가되었습니다.');
-    } catch (err) {
-      console.error('Failed to add item to cart:', err);
-      toast.error('장바구니에 상품을 추가하는 데 실패했습니다. 다시 시도해주세요.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   if (isLoading || !productData) {
     return <LoadingEmpty />;
   }
@@ -111,8 +91,8 @@ function ProductDetailPage() {
                   aria-hidden='true'
                 />
                 <Link
-                  to={`/seller/${productData.sellerId}`}
-                  className='text-neutral-700 transition-colors hover:text-blue-600 hover:underline dark:text-neutral-200 dark:hover:text-blue-400'
+                  to={`/sellers/${productData.sellerId}`}
+                  className='text-neutral-700 transition-colors hover:underline dark:text-neutral-200 dark:hover:text-blue-400'
                 >
                   {productData.sellerName}
                 </Link>
@@ -133,7 +113,7 @@ function ProductDetailPage() {
               <h1 className='mb-4 text-3xl'>{productData.productName}</h1>
               <div className='mb-4 border-t border-b py-4'>
                 <div className='mb-2 text-3xl'>
-                  {productData.productPrice?.toLocaleString('ko-KR')}원
+                  {`${productData.productPrice?.toLocaleString('ko-KR')}원`}
                 </div>
               </div>
 
@@ -166,7 +146,7 @@ function ProductDetailPage() {
                   </Button>
                 </ButtonGroup>
                 <span className='text-lg'>
-                  {(quantity * productData.productPrice)?.toLocaleString('ko-KR')}원
+                  {`${(quantity * productData.productPrice)?.toLocaleString('ko-KR')}원`}
                 </span>
               </div>
 
@@ -197,7 +177,7 @@ function ProductDetailPage() {
                     className='size-5'
                     aria-hidden='true'
                   />
-                  <span>무료배송 (3만원 이상 구매 시)</span>
+                  <span>{`무료배송 (3만원 이상 구매 시)`}</span>
                 </div>
                 <div className='flex items-center gap-2'>
                   <RotateCcw
