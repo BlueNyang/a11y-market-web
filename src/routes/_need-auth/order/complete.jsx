@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { CheckCircle2 } from 'lucide-react';
 
 export const Route = createFileRoute('/_need-auth/order/complete')({
@@ -11,6 +11,7 @@ export const Route = createFileRoute('/_need-auth/order/complete')({
 
 function OrderCompletePage() {
   const { orderId } = Route.useSearch();
+  const navigate = useNavigate();
 
   return (
     <section
@@ -32,7 +33,6 @@ function OrderCompletePage() {
         >
           주문이 완료되었습니다.
         </h1>
-        <p className='mb-6 text-gray-700'>(결제가 미구현 상태입니다.)</p>
 
         {/* 주문번호 */}
         <p className='mb-6 text-gray-600'>주문 번호를 아래에서 확인하실 수 있습니다.</p>
@@ -58,7 +58,12 @@ function OrderCompletePage() {
           <Button
             variant='outline'
             className='w-full'
-            onClick={() => (window.location.href = '/mypage/orders')}
+            onClick={() =>
+              navigate({
+                to: '/mypage',
+                search: (prev) => ({ ...prev, tab: 'order' }),
+              })
+            }
             aria-label='내 주문 내역 보기'
           >
             내 주문 내역 보기
